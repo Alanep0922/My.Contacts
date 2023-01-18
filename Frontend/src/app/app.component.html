@@ -1,0 +1,54 @@
+<h1>Agenda telefonica</h1>
+
+<form [formGroup]="form" (submit)="createOrUpdateContact()">
+  <mat-form-field appearance="fill">
+    <mat-label>Nome</mat-label>
+    <input matInput name="name" formControlName="name">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Telefone</mat-label>
+    <input matInput mask="(00) 00000-0000" name="phone" formControlName="phone">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput name="email" formControlName="email">
+  </mat-form-field>
+
+  <button mat-raised-button [disabled]="form.invalid" *ngIf="idToUpdate">Atualizar</button>
+  <button mat-raised-button [disabled]="form.invalid" *ngIf="!idToUpdate">Criar</button>
+  <button mat-raised-button *ngIf="idToUpdate" (click)="cancelUpdate()">Cancelar atualização</button>
+
+</form>
+
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Nome </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Phone Column -->
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Telefone </th>
+    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+  </ng-container>
+
+  <!-- Email Column -->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Ações </th>
+    <td mat-cell *matCellDef="let element"> 
+      <button mat-raised-button (click)="deleteContact(element.id)">Deletar</button>
+      <button mat-raised-button (click)="updateContact(element)">Update</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
